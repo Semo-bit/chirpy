@@ -49,7 +49,7 @@ func main() {
         Addr: ":" + port,
         Handler: mux,
     }
-    mux.HandleFunc("GET /healthz", healtzHandler)
+    mux.HandleFunc("GET /api/healthz", healtzHandler)
 
     // initialzing the apiConfig
     apiCfg := &apiConfig{fileServerHits: 0}
@@ -59,9 +59,9 @@ func main() {
     mux.Handle("/app/", apiCfg.middlewareMetricsInc(handler))
 
     // creating a new handler to report hits
-    mux.HandleFunc("GET /metrics", apiCfg.metricsHandler)
+    mux.HandleFunc("GET /api/metrics", apiCfg.metricsHandler)
     // creating a new handler to reset hits
-    mux.HandleFunc("/reset", apiCfg.resetHandler)
+    mux.HandleFunc("/api/reset", apiCfg.resetHandler)
 
     log.Printf("Serving on port: %s\n", port)
     log.Fatal(srv.ListenAndServe())
